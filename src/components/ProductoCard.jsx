@@ -1,20 +1,58 @@
 import { useState, memo } from "react";
 import "./ProductoCard.css";
 
-function ProductoCard({ producto }) {
+function ProductoCard({ producto, onVerImagen }) {
   const [imgError, setImgError] = useState(false);
+  const tieneImagen = Boolean(producto.imagen && !imgError);
+
+  const manejarClickImagen = () => {
+    if (tieneImagen && onVerImagen) {
+      onVerImagen(producto);
+    }
+  };
 
   return (
     <article className="producto-card">
-      <div className="producto-imagen-contenedor">
-        {producto.imagen && !imgError ? (
-          <img
-            className="producto-imagen"
-            src={producto.imagen}
-            alt={producto.nombre}
-            loading="lazy"
-            onError={() => setImgError(true)}
-          />
+      <div
+        className={`producto-imagen-contenedor ${tieneImagen ? "con-zoom" : ""}`}
+        onClick={manejarClickImagen}
+        role={tieneImagen ? "button" : undefined}
+        tabIndex={tieneImagen ? 0 : undefined}
+        aria-label={tieneImagen ? `Ver foto grande de ${producto.nombre}` : undefined}
+        onKeyDown={(e) => {
+          if ((e.key === "Enter" || e.key === " ") && tieneImagen) {
+            e.preventDefault();
+            manejarClickImagen();
+          }
+        }}
+      >
+        {tieneImagen ? (
+          <>
+            <img
+              className="producto-imagen"
+              src={producto.imagen}
+              alt={producto.nombre}
+              loading="lazy"
+              onError={() => setImgError(true)}
+            />
+            <span className="producto-zoom-hint" title="Toca para ampliar foto">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.5" y2="16.5" />
+                <line x1="11" y1="8" x2="11" y2="14" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+              </svg>
+            </span>
+          </>
         ) : (
           <div className="producto-imagen-fallback">
             <svg
@@ -42,6 +80,13 @@ function ProductoCard({ producto }) {
         <h2 className="producto-nombre" title={producto.nombre}>
           {producto.nombre}
         </h2>
+
+        {producto.descripcion ? (
+          <div className="producto-dimension-box">
+            <span className="producto-dimension-label">Dimensión:</span>
+            <p className="producto-dimension-texto">{producto.descripcion}</p>
+          </div>
+        ) : null}
 
         <div className="producto-footer">
           <div className="producto-precio-box">

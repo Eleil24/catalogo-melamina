@@ -1,7 +1,7 @@
 import { normalizarPrecio } from "../utils/normalizarPrecio";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const CACHE_KEY = "catalogo_productos_yonimr_v2";
+const CACHE_KEY = "catalogo_productos_yonimr_v4";
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutos en sesión
 
 export function limpiarCacheProductos() {
@@ -45,13 +45,38 @@ export async function obtenerProductos({ forzarRecarga = false } = {}) {
     const idsExistentes = new Set();
 
     datos.forEach((producto, index) => {
-        const precio = normalizarPrecio(producto.precio);
+        let itemNombre = String(producto.nombre || "").trim();
+        let itemDescripcion = producto.descripcion ?? producto["descripción"] ?? producto.dimension ?? producto.dimensiones ?? "";
+        let itemCategoria = producto.categoria;
+        let itemPrecioRaw = producto.precio;
+        let itemImagen = producto.imagen;
+        let itemActivoRaw = producto.activo;
+
+        // Auto-detección por si las columnas estuvieran desplazadas en versiones antiguas
+        const columnasDesplazadas =
+            producto.descripcion === undefined &&
+            producto["descripción"] === undefined &&
+            typeof itemPrecioRaw === "string" &&
+            isNaN(Number(itemPrecioRaw)) &&
+            normalizarPrecio(itemImagen) !== null &&
+            typeof itemActivoRaw === "string" &&
+            (itemActivoRaw.startsWith("http://") || itemActivoRaw.startsWith("https://"));
+
+        if (columnasDesplazadas) {
+            itemDescripcion = producto.categoria || "";
+            itemCategoria = producto.precio || "";
+            itemPrecioRaw = producto.imagen;
+            itemImagen = producto.activo || "";
+            itemActivoRaw = "SI";
+        }
+
+        const precio = normalizarPrecio(itemPrecioRaw);
 
         if (precio === null) {
             errores.push({
-                nombre: producto.nombre || `Fila ${index + 2}`,
+                nombre: itemNombre || `Fila ${index + 2}`,
                 campo: "precio",
-                mensaje: `El precio "${producto.precio}" no es válido.`
+                mensaje: `El precio "${itemPrecioRaw}" no es válido.`
             });
             return;
         }
@@ -64,25 +89,27 @@ export async function obtenerProductos({ forzarRecarga = false } = {}) {
             const idOriginal = rawId ?? "sin ID";
             id = `item-${index + 1}`;
             errores.push({
-                nombre: producto.nombre || `Fila ${index + 2}`,
+                nombre: itemNombre || `Fila ${index + 2}`,
                 campo: "id",
                 mensaje: `El ID "${idOriginal}" está repetido o no es válido (fila ${index + 2}). Se le asignó un identificador único seguro.`
             });
         }
         idsExistentes.add(id);
 
-        const nombreLimpio = String(producto.nombre || "").trim();
-        const categoriaLimpia = String(producto.categoria || "").trim();
+        const nombreLimpio = itemNombre;
+        const descripcionLimpia = String(itemDescripcion || "").trim();
+        const categoriaLimpia = String(itemCategoria || "").trim();
 
         productos.push({
             id: id,
             nombre: nombreLimpio,
+            descripcion: descripcionLimpia,
             categoria: categoriaLimpia,
             precio: precio,
-            imagen: String(producto.imagen || "").trim(),
-            activo: String(producto.activo || "").trim().toUpperCase() === "SI",
+            imagen: String(itemImagen || "").trim(),
+            activo: String(itemActivoRaw || "").trim().toUpperCase() === "SI",
             categoriaLower: categoriaLimpia.toLowerCase(),
-            _busqueda: `${nombreLimpio} ${categoriaLimpia}`.toLowerCase()
+            _busqueda: `${nombreLimpio} ${categoriaLimpia} ${descripcionLimpia}`.toLowerCase()
         });
     });
 

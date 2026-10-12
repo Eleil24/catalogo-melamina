@@ -1,5 +1,6 @@
 /* ==========================================
    ESTILOS GENERALES Y LAYOUT MÓVIL
+   Paleta: Roble Miel, Melamina y Tonos Madera
    ========================================== */
 .catalogo-app {
   width: 100%;
@@ -21,9 +22,9 @@
 
 .header-badge {
   display: inline-block;
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
+  background: #fef3e7;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -31,19 +32,20 @@
   padding: 5px 16px;
   border-radius: 20px;
   margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(154, 52, 18, 0.08);
 }
 
 .header-titulo {
   font-size: 26px;
   font-weight: 800;
-  color: #0f172a;
+  color: #1c1917;
   margin: 0 0 6px;
   letter-spacing: -0.5px;
 }
 
 .header-subtitulo {
   font-size: 14px;
-  color: #64748b;
+  color: #78716c;
   margin: 0;
   max-width: 480px;
   margin-inline: auto;
@@ -62,22 +64,22 @@
   align-items: center;
   width: 100%;
   background: #ffffff;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid #e7e0d6;
   border-radius: 14px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 6px rgba(60, 40, 20, 0.04);
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
 
 .busqueda-caja:focus-within {
-  border-color: #0284c7;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  border-color: #b45309;
+  box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.15);
 }
 
 .busqueda-icono {
   position: absolute;
   left: 14px;
-  color: #94a3b8;
+  color: #a8a29e;
   pointer-events: none;
 }
 
@@ -88,15 +90,19 @@
   border: none;
   background: transparent;
   outline: none;
-  color: #1e293b;
+  color: #292524;
   box-sizing: border-box;
   border-radius: 14px;
+}
+
+.busqueda-input::placeholder {
+  color: #a8a29e;
 }
 
 .busqueda-limpiar {
   position: absolute;
   right: 12px;
-  background: #f1f5f9;
+  background: #f5f2eb;
   border: none;
   border-radius: 50%;
   width: 24px;
@@ -105,62 +111,151 @@
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  color: #64748b;
+  color: #78716c;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .busqueda-limpiar:hover {
-  background-color: #e2e8f0;
-  color: #0f172a;
+  background-color: #e8e2d8;
+  color: #1c1917;
 }
 
-/* Categorías deslizables (Pills) */
+/* Categorías deslizables (Pills) con soporte completo para PC y Móvil */
 .categorias-scroll-container {
   width: 100%;
   max-width: 600px;
   margin-bottom: 16px;
-  overflow: hidden;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .categorias-scroll-container {
+    max-width: 860px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .categorias-scroll-container {
+    max-width: 1020px;
+  }
+}
+
+.categorias-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .categorias-scroll {
   display: flex;
+  align-items: center;
   gap: 8px;
   overflow-x: auto;
-  padding: 4px 2px 10px;
+  padding: 4px 2px;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; /* Firefox: oculta barra para evitar desfase vertical */
+  -ms-overflow-style: none; /* IE/Edge */
+  cursor: grab;
+  scroll-behavior: smooth;
+  width: 100%;
+  user-select: none;
 }
 
+.categorias-scroll:active {
+  cursor: grabbing;
+}
+
+/* Ocultar completamente la barra inferior para centrar las flechas con el texto */
 .categorias-scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Botones de flecha para PC: alineados exactamente a la altura de los botones */
+.btn-scroll-flecha {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  color: #9a3412;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.btn-scroll-flecha:hover:not(:disabled) {
+  background: #b45309;
+  color: #ffffff;
+  border-color: #b45309;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(180, 83, 9, 0.25);
+}
+
+.btn-scroll-flecha:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn-scroll-flecha:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  border-color: #e7e0d6;
+  color: #a8a29e;
+  box-shadow: none;
+  background: #fbf9f5;
+  pointer-events: none;
+}
+
+/* En celulares se ocultan las flechas para dar 100% de pantalla al toque */
+@media (max-width: 640px) {
+  .btn-scroll-flecha {
+    display: none;
+  }
 }
 
 .categoria-pill {
   flex-shrink: 0;
-  padding: 8px 16px;
+  height: 36px;
+  padding: 0 16px;
   font-size: 13px;
   font-weight: 600;
   border-radius: 20px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e7e0d6;
   background: #ffffff;
-  color: #475569;
+  color: #57534e;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .categoria-pill:hover {
-  background: #f0f9ff;
-  color: #0369a1;
-  border-color: #bae6fd;
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
 }
 
 .categoria-pill.activa {
-  background: #0284c7;
+  background: #b45309;
+  background: linear-gradient(135deg, #c26d2e 0%, #a14e17 100%);
   color: #ffffff;
-  border-color: #0284c7;
-  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+  border-color: #a14e17;
+  box-shadow: 0 3px 10px rgba(161, 78, 23, 0.35);
 }
 
 /* Barra de información */
@@ -172,12 +267,12 @@
   align-items: center;
   margin-bottom: 16px;
   font-size: 13px;
-  color: #64748b;
+  color: #78716c;
   padding: 0 4px;
 }
 
 .conteo-texto strong {
-  color: #0f172a;
+  color: #1c1917;
 }
 
 .info-bar-acciones {
@@ -187,9 +282,9 @@
 }
 
 .btn-actualizar-catalogo {
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  color: #475569;
+  background: #fcfaf7;
+  border: 1px solid #dcd5ca;
+  color: #57534e;
   font-size: 11px;
   font-weight: 600;
   padding: 4px 9px;
@@ -203,9 +298,9 @@
 }
 
 .btn-actualizar-catalogo:hover:not(:disabled) {
-  background: #e2e8f0;
-  color: #0f172a;
-  border-color: #94a3b8;
+  background: #f0e9df;
+  color: #1c1917;
+  border-color: #bfaea0;
 }
 
 .btn-actualizar-catalogo:disabled {
@@ -230,12 +325,16 @@
 .btn-limpiar-filtros {
   background: none;
   border: none;
-  color: #0284c7;
+  color: #b45309;
   font-weight: 600;
   font-size: 12px;
   cursor: pointer;
   text-decoration: underline;
   padding: 0;
+}
+
+.btn-limpiar-filtros:hover {
+  color: #78350f;
 }
 
 /* Banner de Observaciones */
@@ -244,7 +343,7 @@
   max-width: 500px;
   background: #fffbeb;
   border: 1px solid #fef3c7;
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid #d97706;
   border-radius: 10px;
   padding: 12px 14px;
   margin-bottom: 18px;
@@ -292,8 +391,8 @@
 .productos-grid {
   display: grid;
   grid-template-columns: 1fr;
-  justify-items: center; /* Centra las cards horizontalmente en cada columna */
-  align-items: stretch;
+  justify-items: center;
+  align-items: start;
   gap: 20px;
   width: 100%;
   max-width: 1200px;
@@ -342,21 +441,15 @@
 .spinner {
   width: 44px;
   height: 44px;
-  border: 4px solid #e0f2fe;
-  border-top-color: #0284c7;
+  border: 4px solid #fed7aa;
+  border-top-color: #b45309;
   border-radius: 50%;
   animation: girar 0.8s linear infinite;
 }
 
-@keyframes girar {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .estado-texto {
   font-size: 16px;
-  color: #475569;
+  color: #57534e;
   font-weight: 500;
 }
 
@@ -365,22 +458,27 @@
 }
 
 .btn-reintentar {
-  background: #0284c7;
+  background: #b45309;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-reintentar:hover {
+  background: #92400e;
 }
 
 /* Sin resultados */
 .sin-resultados {
   padding: 40px 20px;
   text-align: center;
-  background: #f8fafc;
+  background: #fbf9f5;
   border-radius: 16px;
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed #dcd5ca;
   max-width: 400px;
   margin: 20px auto;
 }
@@ -392,12 +490,12 @@
 
 .sin-resultados h3 {
   margin: 0 0 8px;
-  color: #0f172a;
+  color: #1c1917;
   font-size: 18px;
 }
 
 .sin-resultados p {
-  color: #64748b;
+  color: #78716c;
   font-size: 14px;
   margin: 0 0 16px;
 }
@@ -406,14 +504,14 @@
 .catalogo-pie {
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #ebe5dc;
   text-align: center;
   width: 100%;
 }
 
 .catalogo-pie p {
   font-size: 12px;
-  color: #94a3b8;
+  color: #a8a29e;
 }
 
 /* Botón y contenedor de cargar más */
@@ -427,22 +525,22 @@
 
 .btn-cargar-mas {
   background: #ffffff;
-  color: #0284c7;
-  border: 1.5px solid #0284c7;
+  color: #b45309;
+  border: 1.5px solid #b45309;
   font-size: 14px;
   font-weight: 700;
   padding: 12px 24px;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.12);
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.12);
   transition: all 0.2s ease;
   width: 100%;
 }
 
 .btn-cargar-mas:hover {
-  background: #0284c7;
+  background: #b45309;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.28);
   transform: translateY(-1px);
 }
 
@@ -452,6 +550,6 @@
 
 .conteo-total-filtro {
   font-weight: 400;
-  color: #94a3b8;
+  color: #a8a29e;
   font-size: 11px;
 }
