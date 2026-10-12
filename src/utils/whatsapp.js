@@ -7,7 +7,7 @@ export function generarLinkWhatsApp(producto) {
 
   const rawNumber = import.meta.env.VITE_WHATSAPP_NUMBER || "961708410";
   const digitos = String(rawNumber).replace(/\D/g, "");
-  
+
   // Si tiene 9 dígitos (número móvil típico en Perú), agregar prefijo de país 51
   const telefono = digitos.length === 9 ? `51${digitos}` : digitos;
 
@@ -21,6 +21,10 @@ export function generarLinkWhatsApp(producto) {
     "",
     `• *Producto:* ${producto.nombre}`
   ];
+
+  if (producto.imagen && producto.imagen.trim().startsWith("http")) {
+    lineas.push(`• *Foto:* ${producto.imagen.trim()}`);
+  }
 
   if (producto.descripcion && producto.descripcion.trim()) {
     lineas.push(`• *Descripción:* ${producto.descripcion.trim()}`);
