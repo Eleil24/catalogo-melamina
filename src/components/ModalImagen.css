@@ -44,12 +44,12 @@
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 3px 9px;
-  border-radius: 10px;
-  background: #fef3e7;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
+  letter-spacing: 0.6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #d46b53;
+  color: #ffffff;
+  border: none;
 }
 
 .modal-btn-cerrar {
@@ -111,36 +111,50 @@
 
 .modal-producto-nombre {
   margin: 0;
-  font-size: 16px;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-size: 17px;
   font-weight: 700;
   color: #1c1917;
   line-height: 1.35;
+  letter-spacing: -0.2px;
 }
 
 .modal-dimension-box {
-  background: #fbf9f5;
-  border: 1px solid #f2ede5;
-  border-left: 3px solid #d97706;
-  border-radius: 8px;
-  padding: 6px 10px;
-  margin: 3px 0;
+  background: #fdf5eb;
+  border: 1px solid #f2e3d0;
+  border-left: 4px solid #c86927;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 4px 0 2px;
 }
 
-.modal-dimension-etiqueta {
-  display: block;
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #92400e;
-  margin-bottom: 2px;
+.modal-dimension-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  margin-bottom: 5px;
+}
+
+.modal-dimension-box .dimension-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a45a2a;
+}
+
+.modal-dimension-box .dimension-item svg {
+  color: #a45a2a;
+  flex-shrink: 0;
 }
 
 .modal-dimension-texto {
   margin: 0;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #292524;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2b2621;
   line-height: 1.35;
   word-break: break-word;
   white-space: pre-line;
@@ -148,13 +162,21 @@
 
 .modal-precio-fila {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.modal-precio-box {
+  display: flex;
   align-items: baseline;
   gap: 6px;
 }
 
 .modal-precio-etiqueta {
   font-size: 11px;
-  color: #78716c;
+  color: #64748b;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -163,7 +185,37 @@
 .modal-producto-precio {
   font-size: 22px;
   font-weight: 800;
-  color: #b45309;
+  color: #0b2e59;
+}
+
+/* Botón de WhatsApp en modal */
+.btn-whatsapp-modal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #25d366;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.32);
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.btn-whatsapp-modal:hover {
+  background: #20bd5a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.45);
+  color: #ffffff;
+}
+
+.btn-whatsapp-modal:active {
+  transform: translateY(0);
 }
 
 /* Animaciones suaves */
